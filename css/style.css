@@ -1006,13 +1006,22 @@ img {
         animation: none;
     }
     
-    /* Disable all animations and transitions for users who prefer reduced motion */
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
+    /* Disable decorative animations for users who prefer reduced motion */
+    .hero::before,
+    .service-card,
+    .class-card,
+    .feature-item,
+    .about-image img,
+    .image-overlay {
+        animation: none !important;
+        transition: opacity 0.3s ease !important;
+    }
+    
+    /* Keep essential transitions for interactive elements */
+    .btn,
+    .nav-link,
+    a {
+        transition: color 0.2s ease, background-color 0.2s ease !important;
     }
 }
 

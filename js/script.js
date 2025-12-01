@@ -4,10 +4,12 @@
 const navbar = document.getElementById('navbar');
 
 function handleNavbarScroll() {
-    if (window.scrollY > 50) {
-        navbar.classList.add('scrolled');
-    } else {
-        navbar.classList.remove('scrolled');
+    if (navbar) {
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
     }
 }
 
@@ -154,50 +156,25 @@ whatsappButtons.forEach(button => {
 });
 
 // ================================
-// Form Validation (If Contact Form is Added)
-// ================================
-function validateEmail(email) {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(email);
-}
-
-// ================================
 // Parallax Effect for Hero Section (with RAF)
 // ================================
 const hero = document.querySelector('.hero');
 let ticking = false;
+const shouldUseParallax = hero !== null;
 
 function updateParallax(scrollPos) {
-    if (hero) {
-        hero.style.transform = `translateY(${scrollPos * 0.5}px)`;
-    }
+    hero.style.transform = `translateY(${scrollPos * 0.5}px)`;
     ticking = false;
 }
 
 function handleParallax() {
+    if (!shouldUseParallax) return;
+    
     const scrollPos = window.pageYOffset;
-    if (!ticking && hero && scrollPos < window.innerHeight) {
+    if (!ticking && scrollPos < window.innerHeight) {
         window.requestAnimationFrame(() => updateParallax(scrollPos));
         ticking = true;
     }
-}
-
-// ================================
-// Counter Animation for Stats (If Added)
-// ================================
-function animateCounter(element, target, duration = 2000) {
-    let start = 0;
-    const increment = target / (duration / 16);
-    
-    const counter = setInterval(() => {
-        start += increment;
-        if (start >= target) {
-            element.textContent = target;
-            clearInterval(counter);
-        } else {
-            element.textContent = Math.floor(start);
-        }
-    }, 16);
 }
 
 // ================================
