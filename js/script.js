@@ -1,14 +1,15 @@
 // ================================
 // Navigation Scroll Effect
 // ================================
-window.addEventListener('scroll', function() {
-    const navbar = document.getElementById('navbar');
+const navbar = document.getElementById('navbar');
+
+function handleNavbarScroll() {
     if (window.scrollY > 50) {
         navbar.classList.add('scrolled');
     } else {
         navbar.classList.remove('scrolled');
     }
-});
+}
 
 // ================================
 // Mobile Menu Toggle
@@ -16,7 +17,7 @@ window.addEventListener('scroll', function() {
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
 
-if (navToggle) {
+if (navToggle && navMenu) {
     navToggle.addEventListener('click', function() {
         navToggle.classList.toggle('active');
         navMenu.classList.toggle('active');
@@ -27,8 +28,10 @@ if (navToggle) {
 const navLinks = document.querySelectorAll('.nav-link');
 navLinks.forEach(link => {
     link.addEventListener('click', function() {
-        navToggle.classList.remove('active');
-        navMenu.classList.remove('active');
+        if (navToggle && navMenu) {
+            navToggle.classList.remove('active');
+            navMenu.classList.remove('active');
+        }
     });
 });
 
@@ -56,20 +59,24 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 // ================================
 const scrollTopBtn = document.getElementById('scrollTop');
 
-window.addEventListener('scroll', function() {
-    if (window.scrollY > 300) {
-        scrollTopBtn.classList.add('visible');
-    } else {
-        scrollTopBtn.classList.remove('visible');
+function handleScrollTopButton() {
+    if (scrollTopBtn) {
+        if (window.scrollY > 300) {
+            scrollTopBtn.classList.add('visible');
+        } else {
+            scrollTopBtn.classList.remove('visible');
+        }
     }
-});
+}
 
-scrollTopBtn.addEventListener('click', function() {
-    window.scrollTo({
-        top: 0,
-        behavior: 'smooth'
+if (scrollTopBtn) {
+    scrollTopBtn.addEventListener('click', function() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
     });
-});
+}
 
 // ================================
 // AOS (Animate On Scroll) Initialization
@@ -167,13 +174,13 @@ function updateParallax(scrollPos) {
     ticking = false;
 }
 
-window.addEventListener('scroll', function() {
+function handleParallax() {
     const scrollPos = window.pageYOffset;
     if (!ticking && hero && scrollPos < window.innerHeight) {
         window.requestAnimationFrame(() => updateParallax(scrollPos));
         ticking = true;
     }
-});
+}
 
 // ================================
 // Counter Animation for Stats (If Added)
@@ -244,7 +251,7 @@ console.log('%c¡Bienvenida a Guerreras GYM! 💪', 'color: #e99bc3; font-size: 
 console.log('%cFormá parte de nuestra manada de guerreras', 'color: #ffffff; font-size: 14px;');
 
 // ================================
-// Performance Optimization
+// Performance Optimization - Single Scroll Handler
 // ================================
 // Debounce function for scroll events
 function debounce(func, wait = 10, immediate = true) {
@@ -262,9 +269,14 @@ function debounce(func, wait = 10, immediate = true) {
     };
 }
 
-// Apply debounce to scroll events for navigation highlight
-const debouncedScroll = debounce(function() {
+// Consolidated scroll handler with all scroll-related functionality
+function handleScroll() {
+    handleNavbarScroll();
+    handleScrollTopButton();
     activateNavLink();
-}, 100);
+    handleParallax();
+}
 
-window.addEventListener('scroll', debouncedScroll);
+// Apply debounced scroll handler
+const debouncedScrollHandler = debounce(handleScroll, 100);
+window.addEventListener('scroll', debouncedScrollHandler);
