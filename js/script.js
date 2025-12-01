@@ -85,7 +85,7 @@ if (typeof AOS !== 'undefined') {
 }
 
 // ================================
-// Active Navigation Link on Scroll
+// Active Navigation Link on Scroll (handled by debounced scroll below)
 // ================================
 const sections = document.querySelectorAll('section[id]');
 
@@ -109,8 +109,6 @@ function activateNavLink() {
     });
 }
 
-window.addEventListener('scroll', activateNavLink);
-
 // ================================
 // Prevent Right Click on Images (Optional Protection)
 // ================================
@@ -132,9 +130,9 @@ window.addEventListener('load', function() {
 // Dynamic Year in Footer
 // ================================
 const yearElement = document.querySelector('.footer-bottom p');
-if (yearElement) {
+if (yearElement && yearElement.textContent.includes('2024')) {
     const currentYear = new Date().getFullYear();
-    yearElement.innerHTML = yearElement.innerHTML.replace('2024', currentYear);
+    yearElement.textContent = yearElement.textContent.replace('2024', currentYear);
 }
 
 // ================================
@@ -157,13 +155,23 @@ function validateEmail(email) {
 }
 
 // ================================
-// Parallax Effect for Hero Section
+// Parallax Effect for Hero Section (with RAF)
 // ================================
-window.addEventListener('scroll', function() {
-    const hero = document.querySelector('.hero');
+const hero = document.querySelector('.hero');
+let ticking = false;
+
+function updateParallax(scrollPos) {
     if (hero) {
-        const scrolled = window.pageYOffset;
-        hero.style.transform = `translateY(${scrolled * 0.5}px)`;
+        hero.style.transform = `translateY(${scrollPos * 0.5}px)`;
+    }
+    ticking = false;
+}
+
+window.addEventListener('scroll', function() {
+    const scrollPos = window.pageYOffset;
+    if (!ticking && hero && scrollPos < window.innerHeight) {
+        window.requestAnimationFrame(() => updateParallax(scrollPos));
+        ticking = true;
     }
 });
 
@@ -254,9 +262,9 @@ function debounce(func, wait = 10, immediate = true) {
     };
 }
 
-// Apply debounce to scroll events if needed
+// Apply debounce to scroll events for navigation highlight
 const debouncedScroll = debounce(function() {
     activateNavLink();
-});
+}, 100);
 
 window.addEventListener('scroll', debouncedScroll);
