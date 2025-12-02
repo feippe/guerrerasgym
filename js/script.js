@@ -233,27 +233,38 @@ console.log('%c¡Bienvenida a Guerreras GYM! 💪', 'color: #e99bc3; font-size: 
 console.log('%cFormá parte de nuestra manada de guerreras', 'color: #ffffff; font-size: 14px;');
 
 // ================================
-// 3D Tilt Effect for Cards
+// 3D Tilt Effect for Cards (Optimized)
 // ================================
 function add3DTiltEffect() {
     const cards = document.querySelectorAll('.service-card, .testimonial-card, .class-card');
     
     cards.forEach(card => {
+        let rafId = null;
+        
         card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
+            if (rafId) return; // Skip if already scheduled
             
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = (y - centerY) / 10;
-            const rotateY = (centerX - x) / 10;
-            
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px) scale(1.02)`;
+            rafId = requestAnimationFrame(() => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 10;
+                const rotateY = (centerX - x) / 10;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px) scale(1.02)`;
+                rafId = null;
+            });
         });
         
         card.addEventListener('mouseleave', () => {
+            if (rafId) {
+                cancelAnimationFrame(rafId);
+                rafId = null;
+            }
             card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
         });
     });
@@ -267,16 +278,16 @@ if (document.readyState === 'loading') {
 }
 
 // ================================
-// Gallery Item Hover Effects
+// Gallery Item Hover Effects (Optimized with CSS classes)
 // ================================
 const galleryItems = document.querySelectorAll('.gallery-item');
 galleryItems.forEach(item => {
     item.addEventListener('mouseenter', function() {
-        this.style.zIndex = '10';
+        this.classList.add('gallery-item-hover');
     });
     
     item.addEventListener('mouseleave', function() {
-        this.style.zIndex = '1';
+        this.classList.remove('gallery-item-hover');
     });
 });
 

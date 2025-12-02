@@ -832,7 +832,6 @@ img {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 40px;
-    perspective: 1000px;
 }
 
 .service-card {
@@ -844,6 +843,7 @@ img {
     border: 1px solid rgba(233, 155, 195, 0.1);
     transition: var(--transition-smooth);
     transform-style: preserve-3d;
+    perspective: 1000px;
     min-height: 400px;
     background: linear-gradient(135deg, var(--bg-card) 0%, var(--dark-elevated) 100%);
 }
@@ -1144,6 +1144,10 @@ img {
 .gallery-item:hover {
     transform: translateY(-10px) scale(1.02);
     box-shadow: var(--shadow-xl), var(--glow-primary);
+}
+
+.gallery-item-hover {
+    z-index: 10;
 }
 
 .gallery-item img {
@@ -1738,7 +1742,7 @@ img {
 }
 
 .whatsapp-float::after {
-    content: 'Contactanos';
+    content: 'Contáctanos';
     position: absolute;
     right: 75px;
     background: rgba(10, 10, 10, 0.95);
