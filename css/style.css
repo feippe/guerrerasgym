@@ -1822,11 +1822,14 @@ img {
         width: 100%;
         height: calc(100vh - 80px);
         background: rgba(10, 10, 10, 0.98);
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
         flex-direction: column;
         padding: 40px;
         gap: 20px;
-        transition: var(--transition);
+        transition: var(--transition-smooth);
+        border-left: 3px solid var(--primary-color);
+        box-shadow: -5px 0 30px rgba(233, 155, 195, 0.3);
     }
 
     .nav-menu.active {
@@ -1868,16 +1871,52 @@ img {
         width: 100%;
         max-width: 300px;
     }
+    
+    /* Reduce 3D effects on mobile for performance */
+    .service-card,
+    .class-card,
+    .testimonial-card {
+        transform-style: flat !important;
+    }
+    
+    .service-card:hover,
+    .class-card:hover,
+    .testimonial-card:hover {
+        transform: translateY(-10px) !important;
+    }
 }
 
 @media (max-width: 640px) {
     .section {
         padding: 60px 0;
     }
+    
+    .section-header {
+        margin-bottom: 40px;
+    }
+    
+    h1 {
+        font-size: 2rem;
+    }
+    
+    h2 {
+        font-size: 1.75rem;
+    }
 
     .services-grid,
     .classes-grid {
         grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .testimonials-slider {
+        grid-template-columns: 1fr;
+        gap: 25px;
     }
 
     .footer-content {
@@ -1896,6 +1935,7 @@ img {
     .feature-item {
         flex-direction: column;
         text-align: center;
+        padding: 20px;
     }
 
     .whatsapp-float {
@@ -1904,6 +1944,11 @@ img {
         width: 55px;
         height: 55px;
         font-size: 1.8rem;
+    }
+    
+    .whatsapp-float::after {
+        font-size: 0.85rem;
+        padding: 8px 16px;
     }
 
     .scroll-top {
@@ -1924,6 +1969,27 @@ img {
 
     .social-links {
         justify-content: center;
+    }
+    
+    .hero-subtitle {
+        padding: 15px 20px;
+        font-size: 1rem;
+    }
+    
+    .service-icon {
+        width: 80px;
+        height: 80px;
+        font-size: 2.5rem;
+    }
+    
+    .class-info i {
+        font-size: 2.5rem;
+    }
+    
+    /* Disable complex animations on mobile */
+    .hero-content::before,
+    .hero-content::after {
+        display: none;
     }
 }
 

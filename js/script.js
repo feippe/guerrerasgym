@@ -2,14 +2,19 @@
 // Navigation Scroll Effect
 // ================================
 const navbar = document.getElementById('navbar');
+let lastScrollY = window.scrollY;
 
 function handleNavbarScroll() {
     if (navbar) {
-        if (window.scrollY > 50) {
+        const currentScrollY = window.scrollY;
+        
+        if (currentScrollY > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
+        
+        lastScrollY = currentScrollY;
     }
 }
 
@@ -226,6 +231,79 @@ document.querySelectorAll('.service-card, .class-card, .feature-item').forEach(e
 // ================================
 console.log('%c¡Bienvenida a Guerreras GYM! 💪', 'color: #e99bc3; font-size: 20px; font-weight: bold;');
 console.log('%cFormá parte de nuestra manada de guerreras', 'color: #ffffff; font-size: 14px;');
+
+// ================================
+// 3D Tilt Effect for Cards
+// ================================
+function add3DTiltEffect() {
+    const cards = document.querySelectorAll('.service-card, .testimonial-card, .class-card');
+    
+    cards.forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = (y - centerY) / 10;
+            const rotateY = (centerX - x) / 10;
+            
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px) scale(1.02)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0) scale(1)';
+        });
+    });
+}
+
+// Initialize 3D tilt effect after DOM is loaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', add3DTiltEffect);
+} else {
+    add3DTiltEffect();
+}
+
+// ================================
+// Gallery Item Hover Effects
+// ================================
+const galleryItems = document.querySelectorAll('.gallery-item');
+galleryItems.forEach(item => {
+    item.addEventListener('mouseenter', function() {
+        this.style.zIndex = '10';
+    });
+    
+    item.addEventListener('mouseleave', function() {
+        this.style.zIndex = '1';
+    });
+});
+
+// ================================
+// Parallax Effect Enhancement
+// ================================
+function addParallaxToSections() {
+    const sections = document.querySelectorAll('.section');
+    const scrollObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const scrolled = window.scrollY;
+                const rate = scrolled * -0.3;
+                entry.target.style.backgroundPositionY = `${rate}px`;
+            }
+        });
+    }, { threshold: 0.1 });
+    
+    sections.forEach(section => {
+        scrollObserver.observe(section);
+    });
+}
+
+// Initialize parallax effect
+if (window.innerWidth > 768) {
+    addParallaxToSections();
+}
 
 // ================================
 // Performance Optimization - Single Scroll Handler
