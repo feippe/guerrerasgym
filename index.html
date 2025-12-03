@@ -19,6 +19,9 @@
     <!-- AOS Animation -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
+    <!-- Instafeed.js for Instagram Feed -->
+    <script src="https://cdn.jsdelivr.net/npm/instafeed.js@2.0.0/instafeed.min.js"></script>
+    
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/style.css">
 </head>
@@ -41,9 +44,9 @@
                     <li><a href="#inicio" class="nav-link">Inicio</a></li>
                     <li><a href="#nosotras" class="nav-link">Nosotras</a></li>
                     <li><a href="#servicios" class="nav-link">Servicios</a></li>
-                    <li><a href="#clases" class="nav-link">Clases</a></li>
+                    <!--<li><a href="#clases" class="nav-link">Clases</a></li>
                     <li><a href="#galeria" class="nav-link">Galería</a></li>
-                    <li><a href="#testimonios" class="nav-link">Testimonios</a></li>
+                    <li><a href="#testimonios" class="nav-link">Testimonios</a></li>-->
                     <li><a href="#horarios" class="nav-link">Horarios</a></li>
                     <li><a href="#contacto" class="nav-link">Contacto</a></li>
                     <li><a href="https://wa.me/59897287514" class="btn btn-primary" target="_blank">
@@ -74,11 +77,11 @@
                 </div>
             </div>
         </div>
-        <div class="scroll-down">
+        <!--<div class="scroll-down">
             <a href="#nosotras">
                 <i class="fas fa-chevron-down"></i>
             </a>
-        </div>
+        </div>-->
     </section>
 
     <!-- About Section / Nosotras -->
@@ -173,7 +176,7 @@
                         tonificar, fortalecer y transformar tu cuerpo.
                     </p>
                     <ul class="service-list">
-                        <li><i class="fas fa-check"></i> Máquinas de última generación</li>
+                        <li><i class="fas fa-check"></i> Máquinas modernas</li>
                         <li><i class="fas fa-check"></i> Peso libre completo</li>
                         <li><i class="fas fa-check"></i> Zona de cardio</li>
                     </ul>
@@ -283,76 +286,21 @@
                 </p>
             </div>
 
-            <div class="gallery-grid">
-                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
-                    <img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=800&auto=format&fit=crop" 
-                         alt="Mujer entrenando con pesas en el gimnasio"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <div class="gallery-content">
-                            <i class="fas fa-dumbbell"></i>
-                            <h4>Entrenamiento de Fuerza</h4>
-                        </div>
-                    </div>
-                </div>
+            <div id="instafeed" class="gallery-grid">
+                <!-- Las imágenes de Instagram se cargarán aquí dinámicamente -->
+            </div>
 
-                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
-                    <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop" 
-                         alt="Mujer en clase de fitness grupal"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <div class="gallery-content">
-                            <i class="fas fa-users"></i>
-                            <h4>Clases Grupales</h4>
-                        </div>
+            <div class="gallery-fallback" style="display: none;">
+                <p>Si no se cargan las imágenes de Instagram, aquí hay algunas fotos de ejemplo:</p>
+                <div class="gallery-grid">
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=800&auto=format&fit=crop" alt="Mujer entrenando con pesas en el gimnasio">
                     </div>
-                </div>
-
-                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300">
-                    <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=800&auto=format&fit=crop" 
-                         alt="Equipamiento moderno del gimnasio"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <div class="gallery-content">
-                            <i class="fas fa-star"></i>
-                            <h4>Instalaciones Modernas</h4>
-                        </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=800&auto=format&fit=crop" alt="Clases Grupales">
                     </div>
-                </div>
-
-                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
-                    <img src="https://images.unsplash.com/photo-1571902943202-507ec2618e8f?q=80&w=800&auto=format&fit=crop" 
-                         alt="Mujer haciendo sentadillas"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <div class="gallery-content">
-                            <i class="fas fa-fire"></i>
-                            <h4>Ejercicios Funcionales</h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
-                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=800&auto=format&fit=crop" 
-                         alt="Mujer motivada en el gimnasio"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <div class="gallery-content">
-                            <i class="fas fa-heart"></i>
-                            <h4>Motivación y Fuerza</h4>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="gallery-item" data-aos="zoom-in" data-aos-delay="300">
-                    <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=800&auto=format&fit=crop" 
-                         alt="Mujeres entrenando juntas"
-                         loading="lazy">
-                    <div class="gallery-overlay">
-                        <div class="gallery-content">
-                            <i class="fas fa-hands-helping"></i>
-                            <h4>Comunidad de Guerreras</h4>
-                        </div>
+                    <div class="gallery-item">
+                        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=800&auto=format&fit=crop" alt="Instalaciones Modernas">
                     </div>
                 </div>
             </div>
@@ -493,8 +441,8 @@
                     <p>Te esperamos en nuestras instalaciones. Vení a conocernos sin compromiso.</p>
                     <a href="https://www.google.com/maps/search/?api=1&query=Av.+Lezica+6170,+Montevideo,+Uruguay" 
                        target="_blank" 
-                       class="btn btn-outline">
-                        <i class="fas fa-map"></i> Ver en Mapa
+                       class="btn btn-lg btn-primary">
+                        <i class="fas fa-map-marked-alt" style="color: #FFF;"></i> <span>Ver en Mapa</span>
                     </a>
                 </div>
             </div>
@@ -576,12 +524,12 @@
                         <a href="https://wa.me/59897287514?text=Hola!%20Quiero%20información%20sobre%20Guerreras%20GYM" 
                            target="_blank" 
                            class="btn btn-primary btn-lg">
-                            <i class="fab fa-whatsapp"></i> Escribinos por WhatsApp
+                            <i class="fab fa-whatsapp" style="color: #FFF;"></i> <span>Escribinos</span>
                         </a>
                         <a href="https://www.instagram.com/guerreras.gym/" 
                            target="_blank" 
                            class="btn btn-outline btn-lg">
-                            <i class="fab fa-instagram"></i> Seguinos en Instagram
+                            <i class="fab fa-instagram"></i> <span>Seguinos</span>
                         </a>
                     </div>
 
@@ -622,9 +570,9 @@
                         <li><a href="#inicio">Inicio</a></li>
                         <li><a href="#nosotras">Nosotras</a></li>
                         <li><a href="#servicios">Servicios</a></li>
-                        <li><a href="#clases">Clases</a></li>
+                        <!--<li><a href="#clases">Clases</a></li>
                         <li><a href="#galeria">Galería</a></li>
-                        <li><a href="#testimonios">Testimonios</a></li>
+                        <li><a href="#testimonios">Testimonios</a></li>-->
                         <li><a href="#horarios">Horarios</a></li>
                         <li><a href="#contacto">Contacto</a></li>
                     </ul>
@@ -659,7 +607,7 @@
             </div>
 
             <div class="footer-bottom">
-                <p>&copy; 2024 Guerreras GYM. Todos los derechos reservados.</p>
+                <p>&copy; 2025 Guerreras GYM. Todos los derechos reservados.</p>
                 <p class="footer-quote">Porque juntas, somos más fuertes 💪</p>
             </div>
         </div>

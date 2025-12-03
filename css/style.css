@@ -267,17 +267,56 @@ img {
 }
 
 .btn-lg {
-    padding: 15px 40px;
+    padding: 8px 16px;
     font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .btn i {
-    margin-right: 8px;
+    margin-right: 16px;
     transition: var(--transition);
 }
 
 .btn:hover i {
     transform: scale(1.2);
+    color: #fff;
+}
+
+/* Map Button - Special Styling */
+.btn-map {
+    background: var(--gradient-primary);
+    color: #fff;
+    border: none;
+    box-shadow: 0 6px 20px rgba(233, 155, 195, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-map::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.btn-map:hover::before {
+    left: 100%;
+}
+
+.btn-map:hover {
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 10px 30px rgba(233, 155, 195, 0.6);
+    background: linear-gradient(135deg, #d67ba8 0%, #c66ba0 100%);
+}
+
+.btn-map i {
+    margin-right: 8px;
 }
 
 /* ================================
@@ -417,10 +456,11 @@ img {
 .hero {
     position: relative;
     min-height: 100vh;
+    padding-top: 80px;
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+    background: linear-gradient(rgba(10, 10, 10, 0.6), rgba(10, 10, 10, 0.6)), url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1200&auto=format&fit=crop') center/cover no-repeat;
     overflow: hidden;
 }
 
@@ -447,7 +487,7 @@ img {
     height: 100%;
     background: 
         linear-gradient(135deg, rgba(10, 10, 10, 0.85) 0%, rgba(26, 26, 26, 0.7) 100%),
-        url('https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=2070&auto=format&fit=crop') center/cover;
+        url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=1200&auto=format&fit=crop') center/cover;
     /* Alternative images to consider:
        - Woman lifting weights: https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e
        - Female gym training: https://images.unsplash.com/photo-1518611012118-696072aa579a
@@ -627,6 +667,10 @@ img {
 /* ================================
    About Section - Modern Asymmetric
    ================================ */
+.about-section {
+    margin-top: 80px;
+}
+
 .about-content {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1358,7 +1402,7 @@ img {
 .location-box i {
     font-size: 3rem;
     color: var(--primary-color);
-    margin-bottom: 20px;
+    margin-bottom: 8px;
 }
 
 .schedule-box h3,
@@ -1514,7 +1558,7 @@ img {
 .cta-card i {
     font-size: 3rem;
     color: var(--primary-color);
-    margin-bottom: 20px;
+    margin-bottom: 0px;
 }
 
 .cta-card h3 {
@@ -1527,7 +1571,6 @@ img {
 }
 
 .cta-card .btn {
-    display: block;
     margin: 15px 0;
 }
 
@@ -1724,7 +1767,7 @@ img {
     justify-content: center;
     box-shadow: 0 8px 30px rgba(37, 211, 102, 0.4);
     z-index: 999;
-    animation: pulse-whatsapp 2s infinite, float 3s ease-in-out infinite;
+    animation: bounce-whatsapp 2s infinite;
     transition: var(--transition-smooth);
     cursor: pointer;
 }
@@ -1772,10 +1815,10 @@ img {
     box-shadow: 0 0 40px rgba(37, 211, 102, 0.6), 0 10px 40px rgba(37, 211, 102, 0.4);
 }
 
-@keyframes pulse-whatsapp {
-    0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-    70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+@keyframes bounce-whatsapp {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-5px); }
+    60% { transform: translateY(-3px); }
 }
 
 @keyframes whatsappGlow {

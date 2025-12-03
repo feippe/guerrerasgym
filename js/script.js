@@ -144,9 +144,9 @@ window.addEventListener('load', function() {
 // Dynamic Year in Footer
 // ================================
 const yearElement = document.querySelector('.footer-bottom p');
-if (yearElement && yearElement.textContent.includes('2024')) {
+if (yearElement && yearElement.textContent.includes('2025')) {
     const currentYear = new Date().getFullYear();
-    yearElement.textContent = yearElement.textContent.replace('2024', currentYear);
+    yearElement.textContent = yearElement.textContent.replace('2025', currentYear);
 }
 
 // ================================
@@ -346,3 +346,51 @@ function handleScroll() {
 // Apply debounced scroll handler
 const debouncedScrollHandler = debounce(handleScroll, 100);
 window.addEventListener('scroll', debouncedScrollHandler);
+
+// ================================
+// Instagram Feed Integration
+// ================================
+document.addEventListener('DOMContentLoaded', function() {
+    // Reemplaza 'TU_ACCESS_TOKEN_AQUI' con tu token de acceso de Instagram
+    // Para obtener un token: https://developers.facebook.com/docs/instagram-basic-display-api/getting-started
+    const accessToken = 'TU_ACCESS_TOKEN_AQUI'; // ¡IMPORTANTE! Reemplaza esto
+
+    if (accessToken !== 'TU_ACCESS_TOKEN_AQUI') {
+        const feed = new Instafeed({
+            accessToken: accessToken,
+            limit: 6, // Número de posts a mostrar
+            template: `
+                <div class="gallery-item">
+                    <a href="{{link}}" target="_blank" rel="noopener">
+                        <img src="{{image}}" alt="{{caption}}" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-content">
+                                <i class="fas fa-heart"></i>
+                                <h4>{{likes}} likes</h4>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            `,
+            after: function() {
+                // Agregar animaciones AOS después de cargar
+                const items = document.querySelectorAll('#instafeed .gallery-item');
+                items.forEach((item, index) => {
+                    item.setAttribute('data-aos', 'zoom-in');
+                    item.setAttribute('data-aos-delay', (index * 100).toString());
+                });
+                AOS.refresh();
+            },
+            error: function() {
+                // Si hay error, mostrar las imágenes de fallback
+                document.querySelector('.gallery-fallback').style.display = 'block';
+                console.warn('Error cargando feed de Instagram. Mostrando imágenes de fallback.');
+            }
+        });
+        feed.run();
+    } else {
+        // Si no hay token, mostrar fallback
+        document.querySelector('.gallery-fallback').style.display = 'block';
+        console.info('No se configuró token de Instagram. Mostrando imágenes de fallback.');
+    }
+});
