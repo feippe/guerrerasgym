@@ -19,57 +19,146 @@ function handleNavbarScroll() {
 }
 
 // ================================
-// Mobile Menu Toggle
+// Enhanced Mobile Menu with Accessibility
 // ================================
 const navToggle = document.getElementById('navToggle');
 const navMenu = document.getElementById('navMenu');
 
 if (navToggle && navMenu) {
+    // Enhanced click handler with accessibility
     navToggle.addEventListener('click', function() {
-        navToggle.classList.toggle('active');
+        const isActive = navToggle.classList.toggle('active');
         navMenu.classList.toggle('active');
+        
+        // Update ARIA attributes
+        navToggle.setAttribute('aria-expanded', isActive);
+        
+        // Trap focus within menu when open
+        if (isActive) {
+            trapFocus(navMenu);
+        } else {
+            removeFocusTrap();
+        }
+    });
+    
+    // Keyboard support for menu toggle
+    navToggle.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.click();
+        }
     });
 }
 
-// Close mobile menu when clicking on a link
+// Focus trap functionality
+let focusTrapElements = [];
+let previousFocus = null;
+
+function trapFocus(container) {
+    previousFocus = document.activeElement;
+    focusTrapElements = Array.from(container.querySelectorAll('a, button, [tabindex="0"]'));
+    
+    if (focusTrapElements.length > 0) {
+        focusTrapElements[0].focus();
+    }
+    
+    container.addEventListener('keydown', handleFocusTrap);
+}
+
+function handleFocusTrap(e) {
+    if (e.key === 'Tab') {
+        const firstElement = focusTrapElements[0];
+        const lastElement = focusTrapElements[focusTrapElements.length - 1];
+        
+        if (e.shiftKey && document.activeElement === firstElement) {
+            e.preventDefault();
+            lastElement.focus();
+        } else if (!e.shiftKey && document.activeElement === lastElement) {
+            e.preventDefault();
+            firstElement.focus();
+        }
+    }
+    
+    if (e.key === 'Escape') {
+        closeMobileMenu();
+    }
+}
+
+function removeFocusTrap() {
+    if (previousFocus) {
+        previousFocus.focus();
+    }
+    
+    if (navMenu) {
+        navMenu.removeEventListener('keydown', handleFocusTrap);
+    }
+    
+    focusTrapElements = [];
+    previousFocus = null;
+}
+
+function closeMobileMenu() {
+    if (navToggle && navMenu) {
+        navToggle.classList.remove('active');
+        navMenu.classList.remove('active');
+        navToggle.setAttribute('aria-expanded', 'false');
+        removeFocusTrap();
+    }
+}
+
+// Close mobile menu when clicking on a link or outside
 const navLinks = document.querySelectorAll('.nav-link');
 navLinks.forEach(link => {
     link.addEventListener('click', function() {
-        if (navToggle && navMenu) {
-            navToggle.classList.remove('active');
-            navMenu.classList.remove('active');
-        }
+        closeMobileMenu();
     });
 });
 
+// Close menu when clicking outside
+document.addEventListener('click', function(e) {
+    if (navToggle && navMenu && 
+        !navToggle.contains(e.target) && 
+        !navMenu.contains(e.target) && 
+        navMenu.classList.contains('active')) {
+        closeMobileMenu();
+    }
+});
+
 // ================================
-// Smooth Scroll for Navigation Links
+// Enhanced Smooth Scroll with Offset Handling
 // ================================
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function(e) {
         e.preventDefault();
         const target = document.querySelector(this.getAttribute('href'));
         if (target) {
-            const navHeight = document.querySelector('.navbar').offsetHeight;
-            const targetPosition = target.offsetTop - navHeight;
+            const navHeight = document.querySelector('.navbar')?.offsetHeight || 80;
+            const targetPosition = target.offsetTop - navHeight - 20; // Extra offset for better spacing
             
             window.scrollTo({
                 top: targetPosition,
                 behavior: 'smooth'
             });
+            
+            // Update URL without jump
+            history.pushState(null, null, this.getAttribute('href'));
         }
     });
 });
 
 // ================================
-// Scroll to Top Button
+// Enhanced Scroll to Top Button with Progress Indicator
 // ================================
 const scrollTopBtn = document.getElementById('scrollTop');
 
 function handleScrollTopButton() {
     if (scrollTopBtn) {
+        const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+        
         if (window.scrollY > 300) {
             scrollTopBtn.classList.add('visible');
+            // Add progress indicator
+            scrollTopBtn.style.setProperty('--scroll-progress', `${scrollPercent}%`);
         } else {
             scrollTopBtn.classList.remove('visible');
         }
@@ -82,6 +171,14 @@ if (scrollTopBtn) {
             top: 0,
             behavior: 'smooth'
         });
+    });
+    
+    // Add keyboard support
+    scrollTopBtn.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            this.click();
+        }
     });
 }
 
@@ -348,49 +445,61 @@ const debouncedScrollHandler = debounce(handleScroll, 100);
 window.addEventListener('scroll', debouncedScrollHandler);
 
 // ================================
-// Instagram Feed Integration
+// Enhanced Performance and Loading States
 // ================================
-document.addEventListener('DOMContentLoaded', function() {
-    // Reemplaza 'TU_ACCESS_TOKEN_AQUI' con tu token de acceso de Instagram
-    // Para obtener un token: https://developers.facebook.com/docs/instagram-basic-display-api/getting-started
-    const accessToken = 'TU_ACCESS_TOKEN_AQUI'; // ¡IMPORTANTE! Reemplaza esto
 
-    if (accessToken !== 'TU_ACCESS_TOKEN_AQUI') {
-        const feed = new Instafeed({
-            accessToken: accessToken,
-            limit: 6, // Número de posts a mostrar
-            template: `
-                <div class="gallery-item">
-                    <a href="{{link}}" target="_blank" rel="noopener">
-                        <img src="{{image}}" alt="{{caption}}" loading="lazy">
-                        <div class="gallery-overlay">
-                            <div class="gallery-content">
-                                <i class="fas fa-heart"></i>
-                                <h4>{{likes}} likes</h4>
-                            </div>
-                        </div>
-                    </a>
-                </div>
-            `,
-            after: function() {
-                // Agregar animaciones AOS después de cargar
-                const items = document.querySelectorAll('#instafeed .gallery-item');
-                items.forEach((item, index) => {
-                    item.setAttribute('data-aos', 'zoom-in');
-                    item.setAttribute('data-aos-delay', (index * 100).toString());
-                });
-                AOS.refresh();
-            },
-            error: function() {
-                // Si hay error, mostrar las imágenes de fallback
-                document.querySelector('.gallery-fallback').style.display = 'block';
-                console.warn('Error cargando feed de Instagram. Mostrando imágenes de fallback.');
+// Add loading states for buttons
+function addLoadingStates() {
+    const buttons = document.querySelectorAll('.btn');
+    buttons.forEach(button => {
+        button.addEventListener('click', function() {
+            if (this.href && this.href.includes('wa.me')) {
+                // Add loading state for WhatsApp buttons
+                this.classList.add('loading');
+                setTimeout(() => {
+                    this.classList.remove('loading');
+                }, 1000);
             }
         });
-        feed.run();
-    } else {
-        // Si no hay token, mostrar fallback
-        document.querySelector('.gallery-fallback').style.display = 'block';
-        console.info('No se configuró token de Instagram. Mostrando imágenes de fallback.');
-    }
+    });
+}
+
+// Initialize loading states
+addLoadingStates();
+
+// ================================
+// Enhanced Analytics and User Tracking
+// ================================
+
+// Track button interactions
+function trackUserInteraction(element, action) {
+    // Placeholder for analytics tracking
+    console.log(`User Interaction: ${action} on ${element.tagName}${element.className ? '.' + element.className : ''}`);
+    
+    // Add your analytics code here (Google Analytics, Facebook Pixel, etc.)
+    // Example: gtag('event', action, { 'element': element.tagName });
+}
+
+// Add tracking to all interactive elements
+document.addEventListener('DOMContentLoaded', function() {
+    const interactiveElements = document.querySelectorAll('a, button');
+    interactiveElements.forEach(element => {
+        element.addEventListener('click', function() {
+            trackUserInteraction(this, 'click');
+        });
+    });
+});
+
+// ================================
+// Enhanced Error Handling
+// ================================
+
+window.addEventListener('error', function(e) {
+    console.error('JavaScript Error:', e.error);
+    // Add error tracking here
+});
+
+window.addEventListener('unhandledrejection', function(e) {
+    console.error('Unhandled Promise Rejection:', e.reason);
+    // Add error tracking here
 });
