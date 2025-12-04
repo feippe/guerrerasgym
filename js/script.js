@@ -445,61 +445,52 @@ const debouncedScrollHandler = debounce(handleScroll, 100);
 window.addEventListener('scroll', debouncedScrollHandler);
 
 // ================================
-// Enhanced Performance and Loading States
+// Instagram Feed Integration
 // ================================
+document.addEventListener('DOMContentLoaded', function() {
+    // Configuración para Instagram Basic Display API
+    // Para obtener un token: https://developers.facebook.com/docs/instagram-basic-display-api/getting-started
+    const accessToken = 'TU_ACCESS_TOKEN_AQUI'; // ¡IMPORTANTE! Reemplaza esto
+    const userId = 'guerreras.gym'; // Tu usuario de Instagram
 
-// Add loading states for buttons
-function addLoadingStates() {
-    const buttons = document.querySelectorAll('.btn');
-    buttons.forEach(button => {
-        button.addEventListener('click', function() {
-            if (this.href && this.href.includes('wa.me')) {
-                // Add loading state for WhatsApp buttons
-                this.classList.add('loading');
-                setTimeout(() => {
-                    this.classList.remove('loading');
-                }, 1000);
+    // Opción 1: Con token de acceso (recomendado)
+    if (accessToken !== 'TU_ACCESS_TOKEN_AQUI') {
+        const feed = new Instafeed({
+            accessToken: accessToken,
+            limit: 6, // Número de posts a mostrar
+            template: `
+                <div class="gallery-item">
+                    <a href="{{link}}" target="_blank" rel="noopener">
+                        <img src="{{image}}" alt="{{caption}}" loading="lazy">
+                        <div class="gallery-overlay">
+                            <div class="gallery-content">
+                                <i class="fas fa-heart"></i>
+                                <h4>{{likes}} likes</h4>
+                                <p>{{comments}} comentarios</p>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            `,
+            after: function() {
+                // Agregar animaciones AOS después de cargar
+                const items = document.querySelectorAll('#instafeed .gallery-item');
+                items.forEach((item, index) => {
+                    item.setAttribute('data-aos', 'zoom-in');
+                    item.setAttribute('data-aos-delay', (index * 100).toString());
+                });
+                AOS.refresh();
+            },
+            error: function() {
+                // Si hay error, mostrar las imágenes de fallback
+                document.querySelector('.gallery-fallback').style.display = 'block';
+                console.warn('Error cargando feed de Instagram. Mostrando imágenes de fallback.');
             }
         });
-    });
-}
-
-// Initialize loading states
-addLoadingStates();
-
-// ================================
-// Enhanced Analytics and User Tracking
-// ================================
-
-// Track button interactions
-function trackUserInteraction(element, action) {
-    // Placeholder for analytics tracking
-    console.log(`User Interaction: ${action} on ${element.tagName}${element.className ? '.' + element.className : ''}`);
-    
-    // Add your analytics code here (Google Analytics, Facebook Pixel, etc.)
-    // Example: gtag('event', action, { 'element': element.tagName });
-}
-
-// Add tracking to all interactive elements
-document.addEventListener('DOMContentLoaded', function() {
-    const interactiveElements = document.querySelectorAll('a, button');
-    interactiveElements.forEach(element => {
-        element.addEventListener('click', function() {
-            trackUserInteraction(this, 'click');
-        });
-    });
-});
-
-// ================================
-// Enhanced Error Handling
-// ================================
-
-window.addEventListener('error', function(e) {
-    console.error('JavaScript Error:', e.error);
-    // Add error tracking here
-});
-
-window.addEventListener('unhandledrejection', function(e) {
-    console.error('Unhandled Promise Rejection:', e.reason);
-    // Add error tracking here
+        feed.run();
+    } else {
+        // Opción 2: Sin token - mostrar fallback
+        document.querySelector('.gallery-fallback').style.display = 'block';
+        console.info('No se configuró token de Instagram. Mostrando imágenes de fallback.');
+    }
 });

@@ -1792,6 +1792,57 @@ select:focus {
     margin: 0;
 }
 
+/* Instagram Promo Link */
+.instagram-link-item {
+    display: block;
+    text-decoration: none;
+}
+
+.instagram-promo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    background: linear-gradient(135deg, #833ab4 0%, #fd1d1d 50%, #fcb045 100%);
+    color: white;
+    text-align: center;
+    padding: 30px;
+    border-radius: 20px;
+    transition: var(--transition-smooth);
+}
+
+.instagram-promo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 15px 40px rgba(131, 58, 180, 0.4);
+}
+
+.instagram-promo i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    animation: pulse 2s infinite;
+}
+
+.instagram-promo h3 {
+    font-size: 1.3rem;
+    margin-bottom: 8px;
+    font-weight: 700;
+}
+
+.instagram-promo p {
+    font-size: 1rem;
+    margin-bottom: 15px;
+    opacity: 0.9;
+}
+
+.instagram-promo span {
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.8;
+}
+
 /* ================================
    Testimonials Section - Modern Cards
    ================================ */
